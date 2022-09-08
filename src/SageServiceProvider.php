@@ -13,6 +13,9 @@ use Techquity\Aero\Sage\Console\Commands\UpdateProducts;
 use Techquity\Aero\Sage\Jobs\UpdateProduct;
 use Techquity\Aero\Sage\Listeners\CompletedOrder;
 use Illuminate\Support\Facades\Log;
+use Aero\Admin\BulkAction;
+use Aero\Admin\ResourceLists\ProductsResourceList;
+use Techquity\Sage\Jobs\BulkUpdateProducts;
 
 class SageServiceProvider extends ModuleServiceProvider
 {
@@ -85,6 +88,9 @@ class SageServiceProvider extends ModuleServiceProvider
                 ]);
             }
         });
+
+        BulkAction::create(BulkUpdateProducts::class, ProductsResourceList::class)
+        ->title('Update Product Data From Sage');
 
         $this->app->booted(function () {
             $schedule = $this->app->make(Schedule::class);
